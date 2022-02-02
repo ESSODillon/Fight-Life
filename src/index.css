@@ -73,9 +73,9 @@ textarea {
   min-height: 160px;
 }
 .error {
-  color: #c9a227;
-  background: #e7d8c9;
-  border: 1px solid #c9a227;
+  color: red;
+  background: pink;
+  border: 1px solid red;
   border-radius: 4px;
   padding: 8px;
   margin: 10px 0;
