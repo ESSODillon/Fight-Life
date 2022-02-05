@@ -1,5 +1,6 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Select from "react-select";
+import { useCollection } from "../../hooks/useCollection";
 
 // Styles
 import "./Create.css";
@@ -12,15 +13,34 @@ const weightClasses = [
 ];
 
 export default function Create() {
+  const { documents } = useCollection("users");
+  const [users, setUsers] = useState([]);
+
+  // form field states and values
   const [eventPromoter, setEventPromoter] = useState("");
   const [details, setDetails] = useState("");
   const [date, setDate] = useState("");
   const [weightClass, setWeightClass] = useState("");
   const [assignedFighters, setAssignedFighters] = useState([]);
 
+  useEffect(() => {
+    if (documents) {
+      const options = documents.map((user) => {
+        return { value: user, label: user.displayName };
+      });
+      setUsers(options);
+    }
+  }, [documents]);
+
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(eventPromoter, details, date, weightClass.value);
+    console.log(
+      eventPromoter,
+      details,
+      date,
+      weightClass.value,
+      assignedFighters
+    );
   };
 
   return (
@@ -62,8 +82,12 @@ export default function Create() {
           />
         </label>
         <label>
-          <span>Select Fighters:</span>
-          {/* Fighters selected here */}
+          <span>Select Boxers:</span>
+          <Select
+            onChange={(option) => setAssignedFighters(option)}
+            options={users}
+            isMulti
+          />
         </label>
 
         <button className="btn">Add Event</button>
