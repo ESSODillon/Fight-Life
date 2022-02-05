@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import Select from "react-select";
 import { useCollection } from "../../hooks/useCollection";
+import { timestamp } from "../../firebase/config";
+import { useAuthContext } from "../../hooks/useAuthContext";
 
 // Styles
 import "./Create.css";
@@ -12,11 +14,20 @@ const weightClasses = [
   { value: "heavyweight", label: "Heavyweight" },
 ];
 
+const promoters = [
+  { value: "dazn", label: "DAZN" },
+  { value: "showtime", label: "Showtime Boxing" },
+  { value: "hbo", label: "HBO Boxing" },
+  { value: "triller", label: "Triller" },
+];
+
 export default function Create() {
   const { documents } = useCollection("users");
   const [users, setUsers] = useState([]);
+  const { user } = useAuthContext();
 
   // form field states and values
+  const [eventName, setEventName] = useState("");
   const [eventPromoter, setEventPromoter] = useState("");
   const [details, setDetails] = useState("");
   const [date, setDate] = useState("");
@@ -42,18 +53,41 @@ export default function Create() {
       setFormError("Please select a weight class");
       return;
     }
+    if (!eventPromoter) {
+      setFormError("Please select an event promoter");
+      return;
+    }
     if (assignedFighters.length < 1) {
       setFormError("Please assign the event to at least 1 fighter");
       return;
     }
 
-    console.log(
-      eventPromoter,
+    const createdBy = {
+      displayName: user.displayName,
+      photoURL: user.photoURL,
+      id: user.uid,
+    };
+
+    const assignedFightersList = assignedFighters.map((u) => {
+      return {
+        displayName: u.value.displayName,
+        photoURL: u.value.photoURL,
+        id: u.value.uid,
+      };
+    });
+
+    const event = {
+      eventName,
+      eventPromoter: eventPromoter.value,
       details,
-      date,
-      weightClass.value,
-      assignedFighters
-    );
+      weightClass: weightClass.value,
+      date: timestamp.fromDate(new Date(date)),
+      comments: [],
+      createdBy,
+      assignedFightersList,
+    };
+
+    console.log(event);
   };
 
   return (
@@ -61,12 +95,12 @@ export default function Create() {
       <h2 className="page-title">Create a new project</h2>
       <form onSubmit={handleSubmit}>
         <label>
-          <span>Fight Promoter:</span>
+          <span>Event Name:</span>
           <input
             required
             type="text"
-            onChange={(e) => setEventPromoter(e.target.value)}
-            value={eventPromoter}
+            onChange={(e) => setEventName(e.target.value)}
+            value={eventName}
           />
         </label>
         <label>
@@ -85,6 +119,13 @@ export default function Create() {
             type="date"
             onChange={(e) => setDate(e.target.value)}
             value={date}
+          />
+        </label>
+        <label>
+          <span>Promoter:</span>
+          <Select
+            options={promoters}
+            onChange={(option) => setEventPromoter(option)}
           />
         </label>
         <label>
