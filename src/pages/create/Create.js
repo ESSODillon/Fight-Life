@@ -3,6 +3,8 @@ import Select from "react-select";
 import { useCollection } from "../../hooks/useCollection";
 import { timestamp } from "../../firebase/config";
 import { useAuthContext } from "../../hooks/useAuthContext";
+import { useFirestore } from "../../hooks/useFirestore";
+import { useHistory } from "react-router-dom";
 
 // Styles
 import "./Create.css";
@@ -22,9 +24,11 @@ const promoters = [
 ];
 
 export default function Create() {
+  const history = useHistory();
+  const { addDocument, response } = useFirestore("events");
   const { documents } = useCollection("users");
-  const [users, setUsers] = useState([]);
   const { user } = useAuthContext();
+  const [users, setUsers] = useState([]);
 
   // form field states and values
   const [eventName, setEventName] = useState("");
@@ -37,18 +41,19 @@ export default function Create() {
 
   useEffect(() => {
     if (documents) {
-      const options = documents.map((user) => {
-        return { value: user, label: user.displayName };
-      });
-      setUsers(options);
+      setUsers(
+        documents.map((user) => {
+          return { value: { ...user, id: user.id }, label: user.displayName };
+        })
+      );
     }
   }, [documents]);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-
     setFormError(null);
 
+    // Substitutes for 'required'
     if (!weightClass) {
       setFormError("Please select a weight class");
       return;
@@ -62,19 +67,19 @@ export default function Create() {
       return;
     }
 
+    const assignedFightersList = assignedFighters.map((u) => {
+      return {
+        displayName: u.value.displayName,
+        photoURL: u.value.photoURL,
+        id: u.value.id,
+      };
+    });
+
     const createdBy = {
       displayName: user.displayName,
       photoURL: user.photoURL,
       id: user.uid,
     };
-
-    const assignedFightersList = assignedFighters.map((u) => {
-      return {
-        displayName: u.value.displayName,
-        photoURL: u.value.photoURL,
-        id: u.value.uid,
-      };
-    });
 
     const event = {
       eventName,
@@ -82,17 +87,21 @@ export default function Create() {
       details,
       weightClass: weightClass.value,
       date: timestamp.fromDate(new Date(date)),
-      comments: [],
       createdBy,
       assignedFightersList,
+      comments: [],
     };
 
-    console.log(event);
+    await addDocument(event);
+
+    if (response.success) {
+      history.push("/");
+    }
   };
 
   return (
     <div className="create-form">
-      <h2 className="page-title">Create a new project</h2>
+      <h2 className="page-title">Create a new event</h2>
       <form onSubmit={handleSubmit}>
         <label>
           <span>Event Name:</span>
