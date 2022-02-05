@@ -22,6 +22,7 @@ export default function Create() {
   const [date, setDate] = useState("");
   const [weightClass, setWeightClass] = useState("");
   const [assignedFighters, setAssignedFighters] = useState([]);
+  const [formError, setFormError] = useState(null);
 
   useEffect(() => {
     if (documents) {
@@ -34,6 +35,18 @@ export default function Create() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+
+    setFormError(null);
+
+    if (!weightClass) {
+      setFormError("Please select a weight class");
+      return;
+    }
+    if (assignedFighters.length < 1) {
+      setFormError("Please assign the event to at least 1 fighter");
+      return;
+    }
+
     console.log(
       eventPromoter,
       details,
@@ -91,6 +104,7 @@ export default function Create() {
         </label>
 
         <button className="btn">Add Event</button>
+        {formError && <p className="error">{formError}</p>}
       </form>
     </div>
   );
