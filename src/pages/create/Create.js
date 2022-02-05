@@ -1,7 +1,15 @@
 import { useState } from "react";
+import Select from "react-select";
 
 // Styles
 import "./Create.css";
+
+const weightClasses = [
+  { value: "lightweight", label: "Lightweight" },
+  { value: "welterweight", label: "Welterweight" },
+  { value: "middleweight", label: "Middleweight" },
+  { value: "heavyweight", label: "Heavyweight" },
+];
 
 export default function Create() {
   const [eventPromoter, setEventPromoter] = useState("");
@@ -12,7 +20,7 @@ export default function Create() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(eventPromoter, details, date);
+    console.log(eventPromoter, details, date, weightClass.value);
   };
 
   return (
@@ -48,7 +56,10 @@ export default function Create() {
         </label>
         <label>
           <span>Weight Class:</span>
-          {/* Weight Class select here */}
+          <Select
+            options={weightClasses}
+            onChange={(option) => setWeightClass(option)}
+          />
         </label>
         <label>
           <span>Select Fighters:</span>
