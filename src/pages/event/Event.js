@@ -1,5 +1,6 @@
 import { useParams } from "react-router-dom";
 import { useDocument } from "../../hooks/useDocument";
+import EventSummary from "./EventSummary";
 
 // Styles
 import "./Event.css";
@@ -18,7 +19,7 @@ export default function Event() {
 
   return (
     <div className="event-details">
-      <h1>{document.eventName}</h1>
+      <EventSummary event={document} />
     </div>
   );
 }
