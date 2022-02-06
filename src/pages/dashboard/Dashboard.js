@@ -11,7 +11,7 @@ export default function Dashboard() {
     <div>
       <h2 className="page-title">Dashboard</h2>
       {error && <p className="error">{error}</p>}
-      {documents && documents.map((doc) => <EventList events={documents} />)}
+      {documents && <EventList events={documents} />}
     </div>
   );
 }
