@@ -4,6 +4,7 @@ import EventSummary from "./EventSummary";
 
 // Styles
 import "./Event.css";
+import EventComments from "./EventComments";
 
 export default function Event() {
   const { id } = useParams();
@@ -20,6 +21,7 @@ export default function Event() {
   return (
     <div className="event-details">
       <EventSummary event={document} />
+      <EventComments />
     </div>
   );
 }
