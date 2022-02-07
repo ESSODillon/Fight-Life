@@ -1,8 +1,10 @@
 import { useState } from "react";
 import { timestamp } from "../../firebase/config";
 import { useAuthContext } from "../../hooks/useAuthContext";
+import { useFirestore } from "../../hooks/useFirestore";
 
-export default function EventComments() {
+export default function EventComments({ event }) {
+  const { updateDocument, response } = useFirestore("events");
   const [newComment, setNewComment] = useState("");
   const { user } = useAuthContext();
 
@@ -17,7 +19,12 @@ export default function EventComments() {
       id: Math.random(),
     };
 
-    console.log(commentToAdd);
+    await updateDocument(event.id, {
+      comments: [...event.comments, commentToAdd],
+    });
+    if (!response.error) {
+      setNewComment("");
+    }
   };
 
   return (

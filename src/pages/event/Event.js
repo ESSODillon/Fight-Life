@@ -21,7 +21,7 @@ export default function Event() {
   return (
     <div className="event-details">
       <EventSummary event={document} />
-      <EventComments />
+      <EventComments event={document} />
     </div>
   );
 }
