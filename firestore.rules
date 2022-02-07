@@ -1,9 +1,23 @@
 rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
-    match /{document=**} {
-      allow read, write: if
-          request.time < timestamp.date(2022, 3, 2);
+    match /users/{user_id} {
+      allow read, create: if request.auth != null
+      allow update: if request.auth.uid == user_id
     }
+    match /events/{event_id} {
+      allow read, create, update: if request.auth.uid != null;
+      allow delete: if request.auth.uid == resource.data.createdBy.id;
+    }
+          
   }
 }
+
+// fighters collection
+// - any authenticated fignter can read & create
+// - only fighters who 'own/created' a document can update it (user id's match)
+
+
+// events collection
+// - any autheticated fighter can read, create & update a documnt
+// - only fighters who 'own/created' a document can delete it

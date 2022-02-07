@@ -30,12 +30,11 @@ export default function EventSummary({ event }) {
           ))}
         </div>
       </div>
-
-      {user.uid === event.createdBy.id && (
-        <button className="btn" onClick={handleClick}>
-          Cancel Fight
-        </button>
-      )}
+      {/* {user.uid === event.createdBy.id && ( */}
+      <button className="btn" onClick={handleClick}>
+        Cancel Fight
+      </button>
+      {/* )} */}
     </div>
   );
 }
