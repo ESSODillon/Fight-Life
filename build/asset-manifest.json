@@ -1,0 +1,23 @@
+{
+  "files": {
+    "main.css": "/static/css/main.d6c9b564.chunk.css",
+    "main.js": "/static/js/main.eb06ea3a.chunk.js",
+    "main.js.map": "/static/js/main.eb06ea3a.chunk.js.map",
+    "runtime-main.js": "/static/js/runtime-main.ecba0864.js",
+    "runtime-main.js.map": "/static/js/runtime-main.ecba0864.js.map",
+    "static/js/2.e67f49ca.chunk.js": "/static/js/2.e67f49ca.chunk.js",
+    "static/js/2.e67f49ca.chunk.js.map": "/static/js/2.e67f49ca.chunk.js.map",
+    "index.html": "/index.html",
+    "static/css/main.d6c9b564.chunk.css.map": "/static/css/main.d6c9b564.chunk.css.map",
+    "static/js/2.e67f49ca.chunk.js.LICENSE.txt": "/static/js/2.e67f49ca.chunk.js.LICENSE.txt",
+    "static/media/add_icon.376e9b6a.svg": "/static/media/add_icon.376e9b6a.svg",
+    "static/media/boxing-glove.b58865ab.svg": "/static/media/boxing-glove.b58865ab.svg",
+    "static/media/dashboard_icon.bc800f3b.svg": "/static/media/dashboard_icon.bc800f3b.svg"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.ecba0864.js",
+    "static/js/2.e67f49ca.chunk.js",
+    "static/css/main.d6c9b564.chunk.css",
+    "static/js/main.eb06ea3a.chunk.js"
+  ]
+}
